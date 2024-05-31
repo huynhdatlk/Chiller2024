@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DATN K20</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url(img/background.jpg);
+            background-repeat: no-repeat;
+            /* background-attachment: fixed;  */
+            background-size: 100%;
+            background-position: center;
+        }
+
+        .container {
+            padding: 0px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #4e6e99, #8aabd5);
+            color: #eee5e5;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            display: inline-block;
+            position: relative;
+            bottom: 120px;
+            left: 650px
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 10;
+        }
+
+        .Temp {
+            position: relative;
+            right: 800px;
+            bottom: -50px;
+
+        }
+
+        #light1 {
+            width: 45px;
+            height: 45px;
+            background-color: red;
+            border-radius: 50%;
+            position: relative;
+            top: 310px;
+            right: 440px;
+            border: 2px solid black;
+            /* Added border */
+        }
+
+        #light2 {
+            width: 45px;
+            height: 45px;
+            background-color: red;
+            border-radius: 50%;
+            position: relative;
+            top: 310px;
+            right: 690px;
+            border: 2px solid black;
+            /* Added border */
+        }
+
+        #lightAuto,
+        #lightManual {
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            border-radius: 100%;
+            display: flex;
+            display: inline-block;
+            border: 2px solid black;
+            /* Added border */
+        }
+
+        #lightAlarmLTH,
+        #lightWarnLTH,
+        #lightWarnLTL {
+            width: 45px;
+            height: 45px;
+            background-color: gray;
+            border-radius: 100%;
+            margin-left: 50px;
+            /* Khoảng cách giữa các phần tử */
+            position: relative;
+            left: 350px;
+            top: -10px;
+            vertical-align: middle;
+            display: inline-block;
+            border: 2px solid black;
+            /* Added border */
+        }
+
+        .light-item {
+            margin-bottom: 20px;
+            /* Khoảng cách giữa các đèn */
+            display: flex;
+            align-items: center;
+        }
+
+        /* Định dạng đèn */
+        #lightHP,
+        #lightLP,
+        #lightPO,
+        #lightCO {
+            margin-right: 10px;
+            /* Khoảng cách giữa tên và đèn */
+            font-size: 16px;
+            /* Kích thước chữ */
+            width: 30px;
+            height: 30px;
+            background-color: gray;
+            border-radius: 50%;
+            /* Viền tròn */
+            border: 2px solid black;
+            /* Viền đen */
+            margin-left: 20px;
+        }
+
+        #lightL1,
+        #lightL2,
+        #lightL3 {
+            margin-right: 10px;
+            /* Khoảng cách giữa tên và đèn */
+            font-size: 16px;
+            /* Kích thước chữ */
+            width: 30px;
+            height: 30px;
+            background-color: gray;
+            border-radius: 50%;
+            /* Viền tròn */
+            border: 2px solid black;
+            /* Viền đen */
+            margin-left: 20px;
+        }
+
+        .control-wrapper {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            height: 75vh;
+
+        }
+
+        .container-control {
+            background: lightgray;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid black;
+            /* Viền đen */
+            position: relative;
+            left: 100px;
+            bottom: 100px;
+        }
+
+        .control-wrapper1 {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            height: 40vh;
+            padding: 20px;
+        }
+
+        .container-control1 {
+            background: lightgray;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid black;
+            /* Viền đen */
+            margin: 0 auto;
+            max-width: 600px;
+            position: relative;
+            left: 50px;
+            bottom: 100px;
+        }
+
+
+        .control-wrapper2 {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            height: 32vh;
+            padding: 20px;
+        }
+
+        .container-control2 {
+            background: lightgray;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid black;
+            margin: 0 auto;
+            max-width: 600px;
+            width: 105px;
+            position: relative;
+            left: 50px;
+            bottom: 120px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        button.action {
+            position: relative;
+            font-weight: 500;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: transparent;
+            color: rgb(214 214 214);
+            border-color: #333;
+            border: 2px solid;
+            font-size: 24px;
+        }
+
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .form-floating>.form-select {
+            padding: .625rem;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+
+        .button-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .monitor-button {
+            width: 80px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            background-color: #18971a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .monitor-button1 {
+            width: 80px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            background-color: #18971a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #img1 {
+            position: absolute;
+            top: 30px;
+            left: 200px;
+            object-fit: cover;
+            /* Giữ tỷ lệ gốc của ảnh và điều chỉnh kích thước sao cho ảnh phủ hết diện tích của container */
+            transform: scale(0.8);
+            z-index: -1;
+            /* Đưa ảnh xuống phía dưới so với các phần tử khác */
+        }
+
+        .control-wrapper-monitor {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            height: 50vh;
+        }
+
+
+        #passwordInput {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            cursor: pointer;
+
+        }
+
+        #passwordContainer {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #controlEngineer {
+            display: none;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        /* Nút chế độ AUTO/OFF/MANUAL */
+        .btn-group-toggle .btn {
+            font-size: 1.2rem;
+            /* Tăng kích thước font chữ */
+            transition: background-color 0.3s ease;
+            /* Hiệu ứng mượt */
+        }
+
+        .btn-group-toggle .btn input[type="radio"] {
+            transform: scale(2);
+            /* Phóng to nút */
+        }
+
+        .btn-group-toggle .btn:hover {
+            background-color: #f0f0f6;
+            /* Màu nền khác khi hover */
+        }
+
+        /* Hiệu ứng cho các nút ON/OFF PUMP/COMP */
+        .btn-outline-primary:not(:disabled):hover,
+        .btn-outline-primary:not(:disabled):focus {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: scale(1.05);
+            /* Phóng to nhẹ khi hover */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-outline-primary:not(:disabled) {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-outline-primary:disabled {
+            opacity: 0.5;
+            /* Điều chỉnh độ mờ */
+            cursor: not-allowed;
+            /* Thay đổi con trỏ chuột */
+            background-color: #e9ecef;
+            /* Màu nền nhạt hơn */
+            border-color: #e9ecef;
+            /* Màu viền nhạt hơn */
+            color: #6c757d;
+            /* Màu chữ nhạt hơn */
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .header-left img {
+            width: 600px;
+            /* Adjust the size of images as needed */
+            height: auto;
+            margin-right: 10px;
+            /* Adjust spacing between images */
+
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-content h1 {
+            margin: 0;
+        }
+
+        .btn-group1 {
+            display: none;
+        }
+
+        .btn-group2 {
+            display: none;
+        }
+
+        .btn-outline-primary.active {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-left">
+            <img id="logo" src="img/logo.png" alt="Logo">
+        </div>
+        <div class="header">
+            <div class="header-content">
+                <h1>ỨNG DỤNG BMS VÀO ĐIỀU KHIỂN CHILLER</h1>
+            </div>
+        </div>
+    </div>
+    <img id="img1" src="img/Web_3.gif">
+    <div id="lightAlarmLTH" class="light"><b><br><br>Alarm<br>HLT</b></div>
+    <div id="lightWarnLTH" class="light"><b><br><br>Warn<br>HLT</b></div>
+    <div id="lightWarnLTL" class="light"><b><br><br>Alarm<br>LLT</b></div>
+    <div class="control-wrapper">
+        <div class="container-control">
+            <div id="controlFeatures" class="features">
+                <h1>Control Panel</h1>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="setpoint" placeholder=" ">
+                    <label for="setpoint">Setpoint: 5&#8451-30&#8451 </label>
+                </div>
+
+                <div class="btn-group btn-group-toggle" style="margin-top: 20px;" data-toggle="buttons"
+                    onchange="changeOperating()">
+                    <label class="btn btn-danger">
+                        <input type="radio" name="options" id="AUTO" autocomplete="off"
+                            onchange="sendValueToFirebase('AUTO')"> Auto
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="Off" autocomplete="off"
+                            onchange="sendValueToFirebase('Off')"> Off
+                    </label>
+                    <label class="btn btn-success">
+                        <input type="radio" name="options" id="MANUAL" autocomplete="off"
+                            onchange="sendValueToFirebase('MANUAL')"> Manual
+                    </label>
+                </div>
+
+                <div class="btn-group1" style="margin-top: 20px;" role="group"
+                    aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="pumpStatus" value="1" id="pumpOn" autocomplete="off"
+                        onchange="changeOperating()">
+                    <label class="btn btn-outline-primary" for="pumpOn">On</label>
+                    <input type="radio" class="btn-check" name="pumpStatus" value="0" id="pumpOff" autocomplete="off"
+                        onchange="changeOperating()">
+                    <label class="btn btn-outline-primary" for="pumpOff">Off</label>
+                    <b>Pump</b>
+                </div>
+                <div class="btn-group2" style="margin-top: 10px;" role="group"
+                    aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="compStatus" value="1" id="compOn" autocomplete="off"
+                        onchange="changeOperating()">
+                    <label class="btn btn-outline-primary" for="compOn">On</label>
+
+                    <input type="radio" class="btn-check" name="compStatus" value="0" id="compOff" autocomplete="off"
+                        onchange="changeOperating()">
+                    <label class="btn btn-outline-primary" for="compOff">Off</label>
+                    <b>Comp</b>
+                </div>
+            </div>
+            <div id="lightAuto" style="margin-top: 20px;" class="light"></div> <b style="color: #3022c8;">Auto</b>
+            <div id="lightManual" class="light"></div> <b style="color: #3022c8;">Manual</b>
+            <!-- Nút hiện ô nhập mật khẩu -->
+            <button onclick="togglePasswordInput()">Advanced control</button>
+            <!-- Ô nhập mật khẩu và nút Submit -->
+            <div id="passwordContainer">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="enterPressed(event)">
+            </div>
+
+            <div id="controlEngineer">
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="setThighalarm" placeholder=" ">
+                    <label for="setThighalarm">TempHighAlarm </label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="setThighwarn" placeholder=" ">
+                    <label for="setThighwarn">TempHighWarn </label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="setTlow" placeholder=" ">
+                    <label for="setTlow">TempLow </label>
+                </div>
+                <button onclick="initializeValue()">Initialize Value</button>
+            </div>
+        </div>
+        <div class="container">
+        </div>
+        <div class="control-wrapper1">
+            <div class="container-control1">
+                <b>Fault List</b>
+                <div class="light-container">
+                    <div class="light-item">
+                        <span class="label"><b>HP</b></span>
+                        <div id="lightHP" class="light"></div>
+                    </div>
+                    <div class="light-item">
+                        <span class="label"><b>LP</b></span>
+                        <div id="lightLP" class="light"></div>
+                    </div>
+                    <div class="light-item">
+                        <span class="label"><b>PO</b></span>
+                        <div id="lightPO" class="light"></div>
+                    </div>
+                    <div class="light-item">
+                        <span class="label"><b>CO</b></span>
+                        <div id="lightCO" class="light"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="control-wrapper2">
+                <div class="container-control2">
+                    <b>Phase Loss</b>
+                    <div class="light-container">
+                        <div class="light-item">
+                            <span class="label"><b>L1</b></span>
+                            <div id="lightL1" class="light"></div>
+                        </div>
+                        <div class="light-item">
+                            <span class="label"><b>L2</b></span>
+                            <div id="lightL2" class="light"></div>
+                        </div>
+                        <div class="light-item">
+                            <span class="label"><b>L3</b></span>
+                            <div id="lightL3" class="light"></div>
+                        </div>
+                    </div>
+                    <div class="Temp">
+                        <div class="button-column">
+                            <button type="button" class="monitor-button btn btn-primary">
+                                <b id="Temp"></b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="light1" class="light"></div>
+            <div id="light2" class="light"></div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+            <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+            <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+            <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+            <script type="module" src="js/main.js"></script>
+            <script>
+                var pumpOnField = document.getElementById("pumpOn");
+                var pumpOffField = document.getElementById("pumpOff");
+                var compOnField = document.getElementById("compOn");
+                var compOffField = document.getElementById("compOff");
+                var img1 = document.getElementById("img1");
+                const WEB_IMAGE = "img/Web_3.gif";
+                const COMP_IMAGE = "img/Comp_3.gif";
+                const PUMP_IMAGE = "img/Pump_3.gif";
+                const COMP_PUMP_IMAGE = "img/Pump_Comp_3.gif";
+                var autoTimeout;
+                var lightCompTimeout;
+                var lightCompTimeout1;
+                var lightCompTimeout2;
+                var lightCompTimeoutOff;
+                var lightCompTimeoutOff1;
+                var flashInterval;
+                var flashInterval1;
+                let flashIntervalOffif;
+                let flashIntervalOffelse;
+                var CompManualTimeout;
+                var CompAutoTimeout;
+                // Lắng nghe thay đổi từ Firebase
+                function initializeValue() {
+                    var setThighalarmValue = 60;
+                    var setThighwarnValue = 50;
+                    var setTlowValue = 4;
+
+                    // Đặt giá trị mặc định cho các trường nhập số trên web
+                    document.getElementById("setThighalarm").value = setThighalarmValue;
+                    document.getElementById("setThighwarn").value = setThighwarnValue;
+                    document.getElementById("setTlow").value = setTlowValue;
+
+                    // Cập nhật giá trị xuống Firebase
+                    firebase.database().ref("control/setThighalarm").set(setThighalarmValue)
+                        .then(() => console.log("SetThighalarm sent successfully!"))
+                        .catch(error => console.error("Error sending setThighalarm: ", error));
+
+                    firebase.database().ref("control/setThighwarn").set(setThighwarnValue)
+                        .then(() => console.log("SetThighwarn sent successfully!"))
+                        .catch(error => console.error("Error sending setThighwarn: ", error));
+
+                    firebase.database().ref("control/setTlow").set(setTlowValue)
+                        .then(() => console.log("SetTlow sent successfully!"))
+                        .catch(error => console.error("Error sending setTlow: ", error));
+                }
+
+
+                function initialize() {
+                    // Đặt trạng thái Off cho các biến và giao diện người dùng
+                    document.getElementById("Off").checked = true;
+                    // Gửi giá trị Off xuống Firebase
+                    sendValueToFirebase('Off');
+                    changeOperating();
+
+                    localStorage.setItem("isErrorPO", false)
+                    localStorage.setItem("isErrorCO", false)
+                    localStorage.setItem("isErrorLP", false)
+                    localStorage.setItem("isErrorHP", false)
+                }
+
+                // Gọi hàm initialize() khi trang web được tải
+                window.onload = function () {
+                    initialize();
+                };
+
+                // Hàm chuyển đổi hiển thị ô nhập mật khẩu
+                function togglePasswordInput() {
+                    var passwordContainer = document.getElementById("passwordContainer");
+                    var controlEngineer = document.getElementById("controlEngineer");
+                    if (passwordContainer.style.display === "block") {
+                        // Ẩn ô nhập mật khẩu và nội dung điều khiển nâng cao
+                        passwordContainer.style.display = "none";
+                        controlEngineer.style.display = "none";
+                        document.getElementById("passwordInput").value = ""; // Xóa nội dung mật khẩu
+                    } else {
+                        // Hiện ô nhập mật khẩu
+                        passwordContainer.style.display = "block";
+                    }
+                }
+
+                // Hàm hiện ô nhập mật khẩu
+                function showPasswordInput() {
+                    document.getElementById("passwordContainer").style.display = "block";
+                }
+
+                // Hàm kiểm tra mật khẩu
+                function checkPassword() {
+                    var password = document.getElementById("passwordInput").value;
+                    if (password === "123456") {
+                        document.getElementById("controlEngineer").style.display = "block";
+                    } else {
+                        alert("Mật khẩu không đúng! Vui lòng thử lại");
+                    }
+                }
+
+                // Hàm kích hoạt kiểm tra mật khẩu khi nhấn Enter
+                function enterPressed(event) {
+                    if (event.key === "Enter") {
+                        checkPassword();
+                    }
+                }
+
+                function changeOperating() {
+                    let dbRefButtonCOMP = firebase.database().ref("control/mode/buttonCOMP");
+                    let dbRefButtonPUMP = firebase.database().ref("control/mode/buttonPUMP");
+                    let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
+                    let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
+                    var selectedOption = document.querySelector('input[name="options"]:checked').id;
+                    var setpointField = document.getElementById("setpoint");
+                    var pumpOnField = document.getElementById("pumpOn");
+                    var pumpOffField = document.getElementById("pumpOff");
+                    var compOnField = document.getElementById("compOn");
+                    var compOffField = document.getElementById("compOff");
+                    var setpoint = parseFloat(setpointField.value);
+                    const temp = parseFloat(document.getElementById("Temp").textContent.split(":")[1]); // Extracting temperature value
+                    var compLight = document.getElementById("light1");
+                    var pumpLight = document.getElementById("light2");
+                    var compOn = compOnField.checked;
+                    var pumpOn = pumpOnField.checked;
+                    var lightAuto = document.getElementById("lightAuto");
+                    var lightManual = document.getElementById("lightManual");
+                    clearTimeout(lightCompTimeout)
+                    clearTimeout(lightCompTimeout1)
+                    clearTimeout(lightCompTimeout2)
+                    clearTimeout(lightCompTimeoutOff)
+                    clearTimeout(lightCompTimeoutOff1)
+                    clearTimeout(CompManualTimeout)
+                    clearTimeout(CompAutoTimeout)
+                    if (selectedOption === "AUTO") {
+                        setpointField.readOnly = false;
+                        pumpOnField.disabled = true;
+                        pumpOffField.disabled = true;
+                        compOnField.disabled = true;
+                        compOffField.disabled = true;
+                        compOnField.checked = false;
+                        pumpOnField.checked = false;
+                        compOffField.checked = false;
+                        pumpOffField.checked = false;
+                        compOn = false;
+                        pumpOn = false;
+                        if (setpoint < temp) {
+
+                            // set 1 ButtonPump                          
+                            dbRefButtonPUMP.set(1);
+
+                            // Pump On
+                            dbRefMonitorPUMP.on("value", function (snapshot) {
+                                var MonitorAutoPUMPValue = snapshot.val();
+                                if (MonitorAutoPUMPValue == 1) {
+                                    pumpLight.style.backgroundColor = "green"; // Chuyển sang màu xanh
+                                    img1.src = PUMP_IMAGE;
+                                }
+                                else {
+                                    pumpLight.style.backgroundColor = "red"; // Chuyển sang màu xanh
+                                    img1.src = WEB_IMAGE;
+                                }
+                            });
+
+                            // Set 1 ButtonComp 
+                            flashInterval = setInterval(function () {
+                                compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
+                            }, 500); // Chớp tắt mỗi 0.5 giây   
+
+                            lightCompTimeout = setTimeout(function () {
+                                dbRefButtonCOMP.set(1);
+                                // compLight.style.backgroundColor = "green";
+                                clearInterval(flashInterval); // Dừng chớp tắt
+                            }, 10000); // Chuyển sang đỏ sau 10 giây 
+
+                            // Comp On          
+                            dbRefMonitorCOMP.on("value", function (snapshot) {
+                                var MonitorAutoCOMPValue = snapshot.val();
+                                if (MonitorAutoCOMPValue == 1) {                                   
+                                    compLight.style.backgroundColor = "green";
+                                    pumpLight.style.backgroundColor = "green";
+                                    img1.src = COMP_PUMP_IMAGE;                                   
+                                }
+                            });
+
+                        } else {
+                            lightCompTimeout2 = setTimeout(function () {                                     
+                                        dbRefButtonCOMP.set(0);                                      
+                                    }, 2000); // Thực hiện sau 2 giây
+
+                            dbRefMonitorCOMP.once('value').then(function (snapshot) {
+                                if (snapshot.val() == 1) {
+
+                                    flashInterval1 = setInterval(function () {
+                                        compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
+                                    }, 500); // Chớp tắt mỗi 0.5 giây
+
+                                    lightCompTimeout1 = setTimeout(function () {
+                                        clearInterval(flashInterval1); // Dừng chớp tắt sau 2 giây
+                                        compLight.style.backgroundColor = "red"; // Chuyển sang màu đỏ
+                                        img1.src = PUMP_IMAGE;                                                                       
+                                    }, 2000); // Thực hiện sau 2 giây
+                                } 
+                                
+                                else {
+                                    dbRefButtonPUMP.set(1);
+                                    dbRefMonitorPUMP.on("value", function (snapshot) {
+                                        var MonitorAutoPUMPValue = snapshot.val();
+                                        if (MonitorAutoPUMPValue == 1) {
+                                            pumpLight.style.backgroundColor = "green"; // Chuyển sang màu xanh
+                                            img1.src = PUMP_IMAGE;
+                                        }
+                                        else {
+                                            pumpLight.style.backgroundColor = "red"; // Chuyển sang màu xanh
+                                            img1.src = WEB_IMAGE;
+                                        }
+                                    });
+                                    clearInterval(flashInterval);
+                                }
+                            });
+                        }
+                    }
+                    else if (selectedOption === "Off") {
+                        pumpOnField.disabled = true;
+                        pumpOffField.disabled = true;
+                        compOnField.disabled = true;
+                        compOffField.disabled = true;
+                        compOnField.checked = false;
+                        pumpOnField.checked = false;
+                        compOffField.checked = false;
+                        pumpOffField.checked = false;
+                        compLight.style.backgroundColor = "";
+                        pumpLight.style.backgroundColor = "";
+                        compOn = false
+                        pumpOn = false
+                        //--------------------------------------------------------------Auto Taplo-------------------------------------------------------------------------
+                        let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
+                        dbRefMonitorAuto.on("value", function (snapshot) {
+                            let MonitorAutoValue = snapshot.val();
+                            if (MonitorAutoValue == 1) {
+                                if (setpoint < temp) {                           
+                                    // Pump On
+                                    dbRefMonitorPUMP.on("value", function (snapshot) {
+                                        var MonitorAutoPUMPValue = snapshot.val();
+                                        if (MonitorAutoPUMPValue == 1) {
+                                            pumpLight.style.backgroundColor = "green"; // Chuyển sang màu xanh
+                                            img1.src = PUMP_IMAGE;
+                                        }
+                                        else {
+                                            pumpLight.style.backgroundColor = "red"; // Chuyển sang màu xanh
+                                            img1.src = WEB_IMAGE;
+                                        }
+                                    });
+
+                                    // Set 1 ButtonComp 
+                                    flashIntervalOffif = setInterval(function () {
+                                        compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
+                                    }, 500); // Chớp tắt mỗi 0.5 giây        
+                                    
+                        
+                                    // Comp On          
+                                    dbRefMonitorCOMP.on("value", function (snapshot) {
+                                        var MonitorAutoCOMPValue = snapshot.val();
+                                        if (MonitorAutoCOMPValue == 1) {                                    
+                                            compLight.style.backgroundColor = "green";
+                                            pumpLight.style.backgroundColor = "green";
+                                            img1.src = COMP_PUMP_IMAGE; 
+                                            clearInterval(flashIntervalOffif);                                                                         
+                                        }
+                                        else {
+                                            compLight.style.backgroundColor = "red";
+                                            pumpLight.style.backgroundColor = "green";
+                                            img1.src = PUMP_IMAGE;   
+                                        }
+                                    });
+
+                                } else {
+                                    dbRefMonitorCOMP.once('value').then(function (snapshot) {
+                                        if (snapshot.val() == 1) {
+
+                                            flashInterval1 = setInterval(function () {
+                                                compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
+                                            }, 500); // Chớp tắt mỗi 0.5 giây
+
+                                            lightCompTimeout1 = setTimeout(function () {
+                                                clearInterval(flashInterval1); // Dừng chớp tắt sau 2 giây
+                                                compLight.style.backgroundColor = "red"; // Chuyển sang màu đỏ
+                                                img1.src = PUMP_IMAGE;
+                                                dbRefButtonCOMP.set(0);
+                                            }, 2000); // Thực hiện sau 2 giây
+                                        } else {
+                                            dbRefButtonPUMP.set(1);
+                                            dbRefMonitorPUMP.on("value", function (snapshot) {
+                                                var MonitorAutoPUMPValue = snapshot.val();
+                                                if (MonitorAutoPUMPValue == 1) {
+                                                    pumpLight.style.backgroundColor = "green"; // Chuyển sang màu xanh
+                                                    img1.src = PUMP_IMAGE;
+                                                }
+                                                else {
+                                                    pumpLight.style.backgroundColor = "red"; // Chuyển sang màu xanh
+                                                    img1.src = WEB_IMAGE;
+                                                }
+                                            });
+                                            clearInterval(flashInterval);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                        //--------------------------------------------------------------Manual Taplo-------------------------------------------------------------------------
+
+                        let dbRefMonitorManual = firebase.database().ref("monitor/MODE/MANUAL/data");
+                        dbRefMonitorManual.on("value", function (snapshot) {
+                            let MonitorManualValue = snapshot.val();
+                            if (MonitorManualValue == 1) {
+                                firebase.database().ref("monitor/PUMP/data").on("value", function (snapshot) {
+                                    var pumpVal = snapshot.val();
+                                    if (pumpVal == 1) {
+                                        pumpOn = true
+                                        img1.src = PUMP_IMAGE;
+                                        pumpLight.style.backgroundColor = "green";
+                                    } else {
+                                        pumpOn = false
+                                        img1.src = WEB_IMAGE;
+                                        pumpLight.style.backgroundColor = "red";
+                                    }
+                                });
+                                firebase.database().ref("monitor/COMP/data").on("value", function (snapshot) {
+                                    var compVal = snapshot.val();
+                                    if (compVal == 1) {
+                                        img1.src = COMP_PUMP_IMAGE;
+                                        compLight.style.backgroundColor = "green";
+                                    } else {
+                                        img1.src = PUMP_IMAGE;
+                                        compLight.style.backgroundColor = "red";
+                                    }
+                                });
+                            }
+                        });
+                        clearInterval(flashInterval);
+                        clearInterval(flashIntervalOffif);
+                        clearInterval(flashIntervalOffelse);
+                        clearInterval(flashInterval1);
+                    }
+                    else if (selectedOption === "MANUAL") {
+                        
+                        const dbRefCompData = firebase.database().ref("monitor/COMP/data");
+                        const dbRefPumpData = firebase.database().ref("monitor/PUMP/data");
+                        const dbRefSetTlow = firebase.database().ref("control/setTlow");
+                       
+                        dbRefSetTlow.once("value", (snapshot) => {
+                            const setTlow = snapshot.val();
+
+                            dbRefCompData.once("value", (snapshot) => {
+                                const compData = snapshot.val();
+
+                                dbRefPumpData.once("value", (snapshot) => {
+                                    const pumpData = snapshot.val();
+
+                                    dbRefMonitorPUMP.on("value", (snapshot) => {
+                                        const MonitorPUMP = snapshot.val();
+
+                                        dbRefMonitorCOMP.on("value", (snapshot) => {
+                                        const MonitorCOMP = snapshot.val();
+
+
+                                    pumpOnField.disabled = false;
+                                    pumpOffField.disabled = false;
+
+                                    compOnField.disabled = true;
+                                    compOffField.disabled = true;
+
+                                    if (!pumpOffField.checked && !pumpOnField.checked) {
+                                        pumpOffField.checked = true;
+                                        compOffField.checked = true;
+                                    }
+
+                                    if (pumpOnField.checked && compOnField.checked) {
+                                        pumpOnField.disabled = true;
+                                        pumpOffField.disabled = true;
+
+                                        compOnField.disabled = false;
+                                        compOffField.disabled = false;
+                                    }
+
+                                    if (pumpOnField.checked && !compOnField.checked) {
+                                        CompManualTimeout = setTimeout(function () {
+                                            compOnField.disabled = false;
+                                            compOffField.disabled = false;
+
+                                            pumpOnField.disabled = false;
+                                            pumpOffField.disabled = false;
+                                        }, 3000);
+                                    } else {
+                                        // Nếu pumpOn không được bật, hủy hẹn giờ
+                                        clearTimeout(CompManualTimeout);
+                                    }
+
+                                    // if (!compOn && !pumpOn) {
+                                    //     // Khi cả comp và pump đều off
+                                    //     img1.src = WEB_IMAGE;
+                                    // } else if ((!compOn && pumpOn)) {
+                                    //     // Khi chỉ pump on và comp off
+                                    //     img1.src = PUMP_IMAGE;
+                                    // } else if ((!compOn && pumpOn) && (temp < setTlow)) {
+                                    //     compOnField.disabled = true;
+                                    //     compOffField.disabled = true;
+                                    //     clearTimeout(CompManualTimeout);
+                                    //     img1.src = PUMP_IMAGE;
+                                    // } else if ((compOn && pumpOn) && (temp > setTlow)) {
+                                    //     compOnField.checked = true;
+                                    //     // Khi cả comp và pump đều on
+                                    //     img1.src = COMP_PUMP_IMAGE;
+                                    // } else if ((compOn && pumpOn) && (temp < setTlow)) {
+                                    //     // Khi cả comp và pump đều on
+                                    //     compOffField.checked = true;
+                                    //     img1.src = PUMP_IMAGE;
+                                    // }
+
+                                    if (pumpOn) {
+                                        dbRefButtonPUMP.set(1);
+                                        // pumpLight.style.backgroundColor = "green";
+                                        // img1.src = PUMP_IMAGE;
+                                     
+                                    } else {
+                                        dbRefButtonPUMP.set(0);
+                                        // pumpLight.style.backgroundColor = "red";
+                                        // img1.src = WEB_IMAGE;
+                                    }
+                                    if (compOn) {
+                                        dbRefButtonCOMP.set(1);     
+                                        // compLight.style.backgroundColor = "green";
+                                        // img1.src = COMP_PUMP_IMAGE;
+                                                       
+                                    } else {
+                                        dbRefButtonCOMP.set(0);                                                   
+                                        // compLight.style.backgroundColor = "red";
+                                    }
+
+                                    if (MonitorPUMP == 1) {
+                                        pumpLight.style.backgroundColor = "green";                                      
+                                        img1.src = PUMP_IMAGE;                                     
+                                    } else {
+                                        pumpLight.style.backgroundColor = "red";                          
+                                        img1.src = WEB_IMAGE;
+                                    }
+                                    if (MonitorCOMP == 1) {
+                                        compLight.style.backgroundColor = "green";                                            
+                                        img1.src = COMP_PUMP_IMAGE;
+                                                                
+                                    } else {
+                                        compLight.style.backgroundColor = "red";                                                                                    
+                                    }
+                                });
+                                
+                            });
+                            clearInterval(flashInterval);
+                            clearInterval(flashIntervalOffif);
+                            clearInterval(flashIntervalOffelse);
+                            clearInterval(flashInterval1);
+                            });
+                        });
+                    });
+                    }
+                }
+                function sendValueToFirebase(mode) {
+                    var autoValue = 0;
+                    var manualValue = 0;
+                    var offValue = 0;
+
+                    // Xác định giá trị cần gửi xuống Firebase dựa trên chế độ được chọn
+                    if (mode === 'AUTO') {
+                        autoValue = 1;
+                        offValue = 0;
+                        manualValue = 0;
+                    } else if (mode === 'MANUAL') {
+                        manualValue = 1;
+                        offValue = 0;
+                        autoValue = 0;
+                    }
+                    else if (mode === 'Off') {
+                        offValue = 1;
+                        autoValue = 0;
+                        manualValue = 0;
+                    }
+                    // Gửi giá trị của biến AUTO xuống Firebase
+                    let dbRefAuto = firebase.database().ref("control/mode/AUTO");
+                    dbRefAuto.set(autoValue)
+
+                    // Gửi giá trị của biến MANUAL xuống Firebase
+                    let dbRefManual = firebase.database().ref("control/mode/MANUAL");
+                    dbRefManual.set(manualValue)
+
+                    // Gửi giá trị của biến Off xuống Firebase
+                    let dbRefOff = firebase.database().ref("control/BIENTAM");
+                    dbRefOff.set(offValue)
+
+                    dbRefOff = firebase.database().ref("control/BIENTAM");
+                    dbRefOff.on("value", function (snapshot) {
+
+                        var offValue = snapshot.val();
+
+                        if (offValue === 1) {
+                            document.getElementById("Off").checked = true;
+                            document.querySelector('.btn-group1').style.display = 'none';
+                            document.querySelector('.btn-group2').style.display = 'none';
+
+                        } else {
+                            document.getElementById("Off").checked = false;
+
+                        }
+                    });
+                    // Cập nhật giao diện web dựa trên giá trị của biến MANUAL
+                    if (manualValue === 1) {
+                        // Hiển thị btn-group1 và btn-group2
+                        document.querySelector('.btn-group1').style.display = 'block';
+                        document.querySelector('.btn-group2').style.display = 'block';
+                    } else {
+                        // Ẩn btn-group1 và btn-group2
+                        document.querySelector('.btn-group1').style.display = 'none';
+                        document.querySelector('.btn-group2').style.display = 'none';
+                    }
+                    // Cập nhật giá trị của biến buttonCOMP và buttonPUMP khi ở chế độ Off
+                    let dbRefButtonCOMP = firebase.database().ref("control/mode/buttonCOMP");
+                    let dbRefButtonPUMP = firebase.database().ref("control/mode/buttonPUMP");
+                    let dbRefSetpoint = firebase.database().ref("control/setpoint");
+                    let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
+                    let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
+                    let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
+                    let dbRefMonitorManual = firebase.database().ref("monitor/MODE/MANUAL/data");
+                    if (offValue === 1) {
+                        dbRefButtonCOMP.set(0);
+                        dbRefButtonPUMP.set(0);
+                        dbRefSetpoint.set(20);
+                        dbRefMonitorAuto.set(0);
+                        dbRefMonitorManual.set(0);
+                        dbRefMonitorCOMP.set(0);
+                        dbRefMonitorPUMP.set(0);
+                    }
+                    if (manualValue === 1) {
+                        dbRefSetpoint.set(null);
+                    }
+                    if (autoValue == 1) {
+                        dbRefSetpoint.set(20);
+                    }
+                    if (offValue === 0) {
+                        dbRefMonitorCOMP.set(0);
+                        dbRefMonitorPUMP.set(0);
+                        dbRefMonitorAuto.set(0);
+                        dbRefMonitorManual.set(0);
+                    }
+                }
+            </script>
+</body>
+
+</html>
