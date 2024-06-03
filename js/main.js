@@ -19,59 +19,281 @@ const dbRefControl = firebase.database().ref("control");
 
 export function checkfault() {
     var selectedOption = document.querySelector('input[name="options"]:checked').id;
-    const monitoredVariables = ["LP", "HP", "CO", "PO", "L1", "L2", "L3"];
+    const monitoredVariables = ["LP", "HP", "CO", "PO", "L1", "L2", "L3","ALARM_LIQUID_TEMP_HIGH","WARN_LIQUID_TEMP_LOW"];
+    let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
+    let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
+    let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
+    let dbRefMonitorManual = firebase.database().ref("monitor/MODE/MANUAL/data");
+    let dbRefControlCOMP = firebase.database().ref("control/mode/buttonCOMP");
+    let dbRefControlPUMP = firebase.database().ref("control/mode/buttonPUMP");
+    let dbRefControlAuto = firebase.database().ref("control/mode/AUTO");
+    let dbRefControlManual = firebase.database().ref("control/mode/MANUAL");
 
     monitoredVariables.forEach(variable => {
-        if (variable == "L1" || variable == "L2" || variable == "L3") {
-            dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
+
+         if (variable == "ALARM_LIQUID_TEMP_HIGH") {
+            dbRefMonitor.child(variable).child("data").on("value", (snap) => {
                 const val = snap.val();
-                if (val == 1) {
-                    let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
-                    let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
-                    let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
-                    let dbRefMonitorManual = firebase.database().ref("monitor/MODE/MANUAL/data");
-                    let dbRefControlCOMP = firebase.database().ref("control/mode/buttonCOMP");
-                    let dbRefControlPUMP = firebase.database().ref("control/mode/buttonPUMP");
-                    let dbRefControlAuto = firebase.database().ref("control/mode/AUTO");
-                    let dbRefControlManual = firebase.database().ref("control/mode/MANUAL");
-                    dbRefMonitorCOMP.set(0);
-                    dbRefMonitorPUMP.set(0);
-                    dbRefMonitorAuto.set(0);
-                    dbRefMonitorManual.set(0);
-                    dbRefControlCOMP.set(0);
-                    dbRefControlPUMP.set(0);
-                    dbRefControlAuto.set(0);
-                    dbRefControlManual.set(0);
-                    document.querySelector('input[name="options"][id="Off"]').checked = true;
-                    alert("Error");
-                }
-            });
-        } else if (variable == "LP" || variable == "HP" || variable == "CO") {
-            dbRefMonitor.child("statusF").child(variable).child("data").on("value", (snap) => {
-                const val = snap.val();
-                let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
-                let dbRefControlCOMP = firebase.database().ref("control/mode/buttonCOMP");
-                let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
-                dbRefMonitorAuto.on("value", function (snapshot) {
-                    var MonitorAutoValue = snapshot.val();
-                    let dbRefControlAuto = firebase.database().ref("control/mode/AUTO");
-                    dbRefControlAuto.on("value", function (snapshot) {
-                        var ControlAutoValue = snapshot.val();
-                        let isErrorLP = JSON.parse(localStorage.getItem("isErrorLP"));
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorHTL = JSON.parse(localStorage.getItem("isErrorHTL"));
+                        // co loi tat COMP
                         if (val == 0) {
 
-                            localStorage.setItem("isErrorLP", true)
-                            dbRefMonitorCOMP.set(0);
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                                pumpOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorHTL", true)
+                            dbRefControlPUMP.set(0);
+                            dbRefControlCOMP.set(0);
+                            compLight.style.backgroundColor = "red";
+                           
+                        }
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 1 && isErrorHTL == true) {
+                            dbRefControlPUMP.set(1);
+                            localStorage.setItem("isErrorHTL", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "L1") {
+            dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorL1 = JSON.parse(localStorage.getItem("isErrorL1"));
+                        // co loi tat COMP
+                        if (val == 1) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                                pumpOffField.checked = true;
+                            }
+
+                            localStorage.setItem("isErrorL1", true)
+                            dbRefControlPUMP.set(0);
+                            dbRefControlCOMP.set(0);
+                            compLight.style.backgroundColor = "red";
+                            alert(" L1 Error - Comp and Pump stop");
+                        }
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 0 && isErrorL1 == true) {
+                            dbRefControlPUMP.set(1);
+                            localStorage.setItem("isErrorL1", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "L2") {
+            dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorL2 = JSON.parse(localStorage.getItem("isErrorL2"));
+
+                        if (val == 1) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                                pumpOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorL2", true)
+
+                            dbRefControlPUMP.set(0);
+                            dbRefControlCOMP.set(0);
+                            compLight.style.backgroundColor = "red";
+                            alert(" L2 Error - Comp and Pump stop");
+                        }
+
+                        if (ControlAutoValue == 1 && val == 0 && isErrorL2 == true) {
+
+                            dbRefControlPUMP.set(1);
+                            localStorage.setItem("isErrorL2", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "L3") {
+            dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorL3 = JSON.parse(localStorage.getItem("isErrorL3"));
+
+                        if (val == 1) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                                pumpOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorL3", true)
+
+                            dbRefControlPUMP.set(0);
+                            dbRefControlCOMP.set(0);
+                            compLight.style.backgroundColor = "red";
+                            alert(" L3 Error - Comp and Pump stop");
+                        }
+
+                        if (ControlAutoValue == 1 && val == 0 && isErrorL3 == true) {
+
+                            dbRefControlPUMP.set(1);
+                            localStorage.setItem("isErrorL3", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "WARN_LIQUID_TEMP_LOW") {
+          
+            dbRefMonitor.child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorLLT = JSON.parse(localStorage.getItem("isErrorLLT"));
+                        // co loi tat COMP
+                        if (val == 0) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorLLT", true)
+                            compLight.style.backgroundColor = "red";
                             dbRefControlCOMP.set(0);
 
-                            document.querySelector('input[name="options"][id="Off"]').checked = true;
-                            alert("Error - Comp stop");
+                           
                         }
-                        if ((MonitorAutoValue == 1 || ControlAutoValue == 1) && val == 1 && isErrorLP == true) {
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 1 && isErrorLLT == true) {
 
-                            dbRefMonitorCOMP.set(1);
+                            dbRefControlCOMP.set(1);
+                            localStorage.setItem("isErrorLLT", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "LP") {
+            // console.log("ErrorLP", variable)
+            dbRefMonitor.child("statusF").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+                        let isErrorLP = JSON.parse(localStorage.getItem("isErrorLP"));
+                        // co loi tat COMP
+                        if (val == 0) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorLP", true)
+                            compLight.style.backgroundColor = "red";
+                            dbRefControlCOMP.set(0);
+
+                            alert(" Low Pressure Error - Comp stop");
+                        }
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 1 && isErrorLP == true) {
+
                             dbRefControlCOMP.set(1);
                             localStorage.setItem("isErrorLP", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "HP") {
+            // console.log("ErrorHP", variable)
+            dbRefMonitor.child("statusF").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+
+                        let isErrorHP = JSON.parse(localStorage.getItem("isErrorHP"));
+                        // co loi tat COMP
+                        if (val == 0) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorHP", true)
+                            compLight.style.backgroundColor = "red";
+                            dbRefControlCOMP.set(0);
+
+                            alert("High Pressure Error - Comp stop");
+                        }
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 1 && isErrorHP == true) {
+
+                            dbRefControlCOMP.set(1);
+                            localStorage.setItem("isErrorHP", false)
+                            changeOperating();
+                        }
+                    });
+                });
+            });
+        }
+        else if (variable == "CO") {
+            // console.log("ErrorCO", variable)
+            dbRefMonitor.child("statusF").child(variable).child("data").on("value", (snap) => {
+                const val = snap.val();
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
+
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
+
+                        let isErrorCO = JSON.parse(localStorage.getItem("isErrorCO"));
+                        // co loi tat COMP
+                        if (val == 0) {
+
+                            if (ControlManualValue == 1) {
+                                compOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorCO", true)
+                            compLight.style.backgroundColor = "red";
+                            dbRefControlCOMP.set(0);
+
+                            alert("Comp OverLoad Error - Comp stop");
+                        }
+                        // da sua loi bat COMP
+                        if (ControlAutoValue == 1 && val == 1 && isErrorCO == true) {
+                            
+
+                            dbRefControlCOMP.set(1);
+                            localStorage.setItem("isErrorCO", false)
+                            changeOperating();
                         }
                     });
                 });
@@ -80,34 +302,40 @@ export function checkfault() {
         else {
             dbRefMonitor.child("statusF").child(variable).child("data").on("value", (snap) => {
                 const val = snap.val();
-                let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
-                let dbRefControlPUMP = firebase.database().ref("control/mode/buttonPUMP");
-                let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
-                dbRefMonitorAuto.on("value", function (snapshot) {
-                    var MonitorAutoValue = snapshot.val();
-                    let isErrorPO = JSON.parse(localStorage.getItem("isErrorPO"));
+                dbRefControlAuto.on("value", function (snapshot) {
+                    var ControlAutoValue = snapshot.val();
 
-                    if (val == 0) {
+                    dbRefControlManual.on("value", function (snapshot) {
+                        var ControlManualValue = snapshot.val();
 
-                        localStorage.setItem("isErrorPO", true)
-                        dbRefControlPUMP.set(0);
-                        dbRefMonitorPUMP.set(0);
+                        let isErrorPO = JSON.parse(localStorage.getItem("isErrorPO"));
 
-                        document.querySelector('input[name="options"][id="Off"]').checked = true;
-                        alert("Error - Pump stop");
-                    }
-                    if (MonitorAutoValue == 1 && val == 1 && isErrorPO == true) {
+                        // co loi PO
+                        if (val == 0) {
 
-                        dbRefMonitorPUMP.set(1);
-                        dbRefControlPUMP.set(1);
-                        localStorage.setItem("isErrorPO", false);
-                    }
-                })
+                            if (ControlManualValue == 1) {
+                                pumpOffField.checked = true;
+                            }
+                            localStorage.setItem("isErrorPO", true)
+                            dbRefControlPUMP.set(0);
+                            // dbRefMonitorPUMP.set(0);
 
-
-            });
+                            // document.querySelector('input[name="options"][id="Off"]').checked = true;
+                            alert("Pump OverLoad Error - Pump stop");
+                        }
+                        // da sua loi o che do Control Auto
+                        if (ControlAutoValue == 1 && val == 1 && isErrorPO == true) {
+                            // dbRefMonitorPUMP.set(1);                        
+                            dbRefControlPUMP.set(1);
+                            localStorage.setItem("isErrorPO", false);
+                            changeOperating();
+                        }
+                    })
+                });
+            })
         }
     });
+
 }
 
 
@@ -135,7 +363,7 @@ updateBientam();
 // Lắng nghe sự thay đổi của AUTO_TAPLO/data (1)
 dbRefAutoTaplo.on("value", (snapshot) => {
     const val = snapshot.val();
-    if (val !== 0) {
+    if (val != 0) {
         updateBientam();
     }
 });
@@ -143,7 +371,7 @@ dbRefAutoTaplo.on("value", (snapshot) => {
 // Lắng nghe sự thay đổi của MANUAL_TAPLO/data (2)
 dbRefManualTaplo.on("value", (snapshot) => {
     const val = snapshot.val();
-    if (val !== 0) {
+    if (val != 0) {
         updateBientam();
     }
 });
@@ -174,12 +402,12 @@ dbRefMonitor.child("temp").child("tank").child("data").on("value", (snap) => {
     // Kiểm tra nếu setpoint đã được cập nhật
     if (setpoint1 !== null) {
         // So sánh nhiệt độ với setpoint
-        if (val > setpoint1) {
+        if (val > setpoint1 - 2) {
             if (prevTempState !== "above") {
                 prevTempState = "above";
                 changeOperating(); // Gọi hàm changeOperating khi nhiệt độ vượt qua setpoint
             }
-        } else if (val < setpoint1) {
+        } else if (val < setpoint1 - 2) {
             if (prevTempState !== "below") {
                 prevTempState = "below";
                 changeOperating(); // Gọi hàm changeOperating khi nhiệt độ xuống dưới setpoint
@@ -409,9 +637,8 @@ var pumpOn = pumpOnField.checked;
 firebase.database().ref("control/BIENTAM").on("value", function (snapshot) {
     var offValue = snapshot.val();
     // Kiểm tra nếu giá trị "Off" được gửi lên
-    if (offValue === 1) {
-        // Đặt các biến AUTO, MANUAL, buttonCOMP, và buttonPUMP về 0
-        setpoint = null;
+    if (offValue == 1) {
+        // Đặt các biến AUTO, MANUAL, buttonCOMP, và buttonPUMP về 0   
         compOnField.checked = false;
         pumpOnField.checked = false;
         compOffField.checked = false;
@@ -423,9 +650,9 @@ firebase.database().ref("control/BIENTAM").on("value", function (snapshot) {
         // Lắng nghe sự thay đổi của biến AUTO trên Firebase
         let dbRefAuto2 = firebase.database().ref("monitor/MODE/AUTO/data");
         dbRefAuto2.on("value", function (snapshot) {
-            // Lấy giá trị của biến AUTO từ snapshot
+
             var autoValue = snapshot.val();
-            // Cập nhật giao diện web dựa trên giá trị của biến AUTO
+
             if (autoValue == 1) {
                 document.getElementById("lightAuto").style.backgroundColor = "green"; // Chuyển sang màu đỏ
             } else {
@@ -612,8 +839,9 @@ let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
 dbRefMonitorAuto.on("value", function (snapshot) {
     var MonitorAutoValue = snapshot.val();
     if (MonitorAutoValue == 1) {
-        dbRefMonitorManual.set(0);
-        dbRefMonitorCOMP.set(0);
+        // dbRefMonitorManual.set(0);
+        // dbRefMonitorCOMP.set(0);
+        // dbRefMonitorPUMP.set(0);
     }
 });
 
@@ -623,8 +851,8 @@ dbRefMonitorManual.on("value", function (snapshot) {
     var MonitorManualValue = snapshot.val();
     // Cập nhật giao diện web dựa trên giá trị của biến MANUAL
     if (MonitorManualValue == 1) {
-        dbRefMonitorCOMP.set(0);
+        // dbRefMonitorCOMP.set(0);
         // dbRefMonitorPUMP.set(0);
-        dbRefMonitorAuto.set(0);
+        // dbRefMonitorAuto.set(0);
     }
 });

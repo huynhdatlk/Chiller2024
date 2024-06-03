@@ -568,17 +568,17 @@
                 const PUMP_IMAGE = "img/Pump_3.gif";
                 const COMP_PUMP_IMAGE = "img/Pump_Comp_3.gif";
                 var autoTimeout;
-                var lightCompTimeout;
-                var lightCompTimeout1;
-                var lightCompTimeout2;
-                var lightCompTimeoutOff;
-                var lightCompTimeoutOff1;
-                var flashInterval;
-                var flashInterval1;
+                let lightCompTimeout;
+                let lightCompTimeout1;
+                let lightCompTimeout2;
+                let lightCompTimeoutOff;
+                let lightCompTimeoutOff1;
+                let flashInterval;
+                let flashInterval1;
                 let flashIntervalOffif;
                 let flashIntervalOffelse;
-                var CompManualTimeout;
-                var CompAutoTimeout;
+                let CompManualTimeout;
+                let CompAutoTimeout;
                 // Lắng nghe thay đổi từ Firebase
                 function initializeValue() {
                     var setThighalarmValue = 60;
@@ -659,26 +659,56 @@
                         checkPassword();
                     }
                 }
+                let flashIntervalCOMPLight
+                let flashLightCompTimeout
+               
+                function intervalCOMPLight() {
+                    let compLight = document.getElementById("light1");
+                    let pumpLight = document.getElementById("light2");
+                    let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
+                    clearInterval(flashIntervalCOMPLight);
+                    flashIntervalCOMPLight = setInterval(function () {
+                        compLight.style.backgroundColor = (compLight.style.backgroundColor == "") ? "green" : "";
+                    }, 500); // Chớp tắt mỗi 0.5 giây   
+
+                    clearTimeout(flashLightCompTimeout);
+                    flashLightCompTimeout = setTimeout(function () {
+                        dbRefMonitorCOMP.on("value", function (snapshot) {
+                            let MonitorAutoCOMPValue = snapshot.val();
+                            if (MonitorAutoCOMPValue == 1) {
+
+                                compLight.style.backgroundColor = "green";
+                                // pumpLight.style.backgroundColor = "green";
+                                img1.src = COMP_PUMP_IMAGE;
+                                clearInterval(flashIntervalCOMPLight);
+                            }
+                            else {
+                                compLight.style.backgroundColor = "red";
+                                img1.src = PUMP_IMAGE;
+                            }                      
+                        });
+                    }, 10000);
+                }
 
                 function changeOperating() {
                     let dbRefButtonCOMP = firebase.database().ref("control/mode/buttonCOMP");
                     let dbRefButtonPUMP = firebase.database().ref("control/mode/buttonPUMP");
                     let dbRefMonitorCOMP = firebase.database().ref("monitor/COMP/data");
                     let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
-                    var selectedOption = document.querySelector('input[name="options"]:checked').id;
-                    var setpointField = document.getElementById("setpoint");
-                    var pumpOnField = document.getElementById("pumpOn");
-                    var pumpOffField = document.getElementById("pumpOff");
-                    var compOnField = document.getElementById("compOn");
-                    var compOffField = document.getElementById("compOff");
-                    var setpoint = parseFloat(setpointField.value);
+                    let selectedOption = document.querySelector('input[name="options"]:checked').id;
+                    let setpointField = document.getElementById("setpoint");
+                    let pumpOnField = document.getElementById("pumpOn");
+                    let pumpOffField = document.getElementById("pumpOff");
+                    let compOnField = document.getElementById("compOn");
+                    let compOffField = document.getElementById("compOff");
+                    let setpoint = parseFloat(setpointField.value);
                     const temp = parseFloat(document.getElementById("Temp").textContent.split(":")[1]); // Extracting temperature value
-                    var compLight = document.getElementById("light1");
-                    var pumpLight = document.getElementById("light2");
-                    var compOn = compOnField.checked;
-                    var pumpOn = pumpOnField.checked;
-                    var lightAuto = document.getElementById("lightAuto");
-                    var lightManual = document.getElementById("lightManual");
+                    let compLight = document.getElementById("light1");
+                    let pumpLight = document.getElementById("light2");
+                    let compOn = compOnField.checked;
+                    let pumpOn = pumpOnField.checked;
+                    let lightAuto = document.getElementById("lightAuto");
+                    let lightManual = document.getElementById("lightManual");
                     clearTimeout(lightCompTimeout)
                     clearTimeout(lightCompTimeout1)
                     clearTimeout(lightCompTimeout2)
@@ -686,6 +716,7 @@
                     clearTimeout(lightCompTimeoutOff1)
                     clearTimeout(CompManualTimeout)
                     clearTimeout(CompAutoTimeout)
+
                     if (selectedOption === "AUTO") {
                         setpointField.readOnly = false;
                         pumpOnField.disabled = true;
@@ -698,9 +729,10 @@
                         pumpOffField.checked = false;
                         compOn = false;
                         pumpOn = false;
-                        if (setpoint < temp) {
+                        if ((setpoint - 2) < temp) {
 
-                            // set 1 ButtonPump                          
+                            // set 1 ButtonPump 
+
                             dbRefButtonPUMP.set(1);
 
                             // Pump On
@@ -724,23 +756,24 @@
                             lightCompTimeout = setTimeout(function () {
                                 dbRefButtonCOMP.set(1);
                                 // compLight.style.backgroundColor = "green";
-                                clearInterval(flashInterval); // Dừng chớp tắt
+                                // clearInterval(flashInterval); // Dừng chớp tắt
                             }, 10000); // Chuyển sang đỏ sau 10 giây 
 
                             // Comp On          
                             dbRefMonitorCOMP.on("value", function (snapshot) {
                                 var MonitorAutoCOMPValue = snapshot.val();
-                                if (MonitorAutoCOMPValue == 1) {                                   
+                                if (MonitorAutoCOMPValue == 1) {
                                     compLight.style.backgroundColor = "green";
                                     pumpLight.style.backgroundColor = "green";
-                                    img1.src = COMP_PUMP_IMAGE;                                   
+                                    img1.src = COMP_PUMP_IMAGE;
+                                    clearInterval(flashInterval);
                                 }
                             });
 
                         } else {
-                            lightCompTimeout2 = setTimeout(function () {                                     
-                                        dbRefButtonCOMP.set(0);                                      
-                                    }, 2000); // Thực hiện sau 2 giây
+                            lightCompTimeout2 = setTimeout(function () {
+                                dbRefButtonCOMP.set(0);
+                            }, 2000); // Thực hiện sau 2 giây
 
                             dbRefMonitorCOMP.once('value').then(function (snapshot) {
                                 if (snapshot.val() == 1) {
@@ -750,12 +783,13 @@
                                     }, 500); // Chớp tắt mỗi 0.5 giây
 
                                     lightCompTimeout1 = setTimeout(function () {
-                                        clearInterval(flashInterval1); // Dừng chớp tắt sau 2 giây
+                                        clearInterval(flashInterval1);
+                                        clearInterval(lightCompTimeout2); // Dừng chớp tắt sau 2 giây
                                         compLight.style.backgroundColor = "red"; // Chuyển sang màu đỏ
-                                        img1.src = PUMP_IMAGE;                                                                       
+                                        img1.src = PUMP_IMAGE;
                                     }, 2000); // Thực hiện sau 2 giây
-                                } 
-                                
+                                }
+
                                 else {
                                     dbRefButtonPUMP.set(1);
                                     dbRefMonitorPUMP.on("value", function (snapshot) {
@@ -785,14 +819,16 @@
                         pumpOffField.checked = false;
                         compLight.style.backgroundColor = "";
                         pumpLight.style.backgroundColor = "";
-                        compOn = false
-                        pumpOn = false
+                        // compOn = false
+                        // pumpOn = false
                         //--------------------------------------------------------------Auto Taplo-------------------------------------------------------------------------
                         let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
                         dbRefMonitorAuto.on("value", function (snapshot) {
                             let MonitorAutoValue = snapshot.val();
                             if (MonitorAutoValue == 1) {
-                                if (setpoint < temp) {                           
+                                // nhiet do cao hon 20 
+                                if ((setpoint - 2) < temp) {
+
                                     // Pump On
                                     dbRefMonitorPUMP.on("value", function (snapshot) {
                                         var MonitorAutoPUMPValue = snapshot.val();
@@ -806,44 +842,50 @@
                                         }
                                     });
 
-                                    // Set 1 ButtonComp 
-                                    flashIntervalOffif = setInterval(function () {
-                                        compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
-                                    }, 500); // Chớp tắt mỗi 0.5 giây        
-                                    
-                        
-                                    // Comp On          
-                                    dbRefMonitorCOMP.on("value", function (snapshot) {
-                                        var MonitorAutoCOMPValue = snapshot.val();
-                                        if (MonitorAutoCOMPValue == 1) {                                    
-                                            compLight.style.backgroundColor = "green";
-                                            pumpLight.style.backgroundColor = "green";
-                                            img1.src = COMP_PUMP_IMAGE; 
-                                            clearInterval(flashIntervalOffif);                                                                         
-                                        }
-                                        else {
-                                            compLight.style.backgroundColor = "red";
-                                            pumpLight.style.backgroundColor = "green";
-                                            img1.src = PUMP_IMAGE;   
-                                        }
-                                    });
+                                    intervalCOMPLight();                                 
+                                    // // Set 1 ButtonComp 
+                                    // clearInterval(flashIntervalOffif);
+                                    // flashIntervalOffif = setInterval(function () {
+                                    //     console.log("chớp tắt")
+                                    //     compLight.style.backgroundColor = (compLight.style.backgroundColor == "") ? "green" : "";
+                                    // }, 500); // Chớp tắt mỗi 0.5 giây   
 
+                                    // clearTimeout(lightCompTimeout);
+                                    // lightCompTimeout = setTimeout(function () {
+                                    //     dbRefMonitorCOMP.on("value", function (snapshot) {
+                                    //         var MonitorAutoCOMPValue = snapshot.val();
+                                    //         if (MonitorAutoCOMPValue == 1) {
+
+                                    //             compLight.style.backgroundColor = "green";
+                                    //             pumpLight.style.backgroundColor = "green";
+                                    //             img1.src = COMP_PUMP_IMAGE;
+                                    //             clearInterval(flashIntervalOffif);
+                                    //         }
+                                    //     });
+                                    // }, 10000);
+
+                                    // nhiet do thap hon 20
                                 } else {
                                     dbRefMonitorCOMP.once('value').then(function (snapshot) {
                                         if (snapshot.val() == 1) {
-
+                                            clearInterval(flashInterval1);
                                             flashInterval1 = setInterval(function () {
                                                 compLight.style.backgroundColor = (compLight.style.backgroundColor === "") ? "green" : "";
                                             }, 500); // Chớp tắt mỗi 0.5 giây
 
+                                            pumpLight.style.backgroundColor = "green"; // Chuyển sang màu đỏ
+
+                                            clearTimeout(lightCompTimeout1);
                                             lightCompTimeout1 = setTimeout(function () {
                                                 clearInterval(flashInterval1); // Dừng chớp tắt sau 2 giây
-                                                compLight.style.backgroundColor = "red"; // Chuyển sang màu đỏ
+                                                compLight.style.backgroundColor = "red"; // Chuyển sang màu đỏ                                              
                                                 img1.src = PUMP_IMAGE;
-                                                dbRefButtonCOMP.set(0);
+                                                // dbRefButtonCOMP.set(0);
                                             }, 2000); // Thực hiện sau 2 giây
+
+                                            // nhiet do thap hon 20 va Comp ko bat    
                                         } else {
-                                            dbRefButtonPUMP.set(1);
+                                            // dbRefButtonPUMP.set(1);
                                             dbRefMonitorPUMP.on("value", function (snapshot) {
                                                 var MonitorAutoPUMPValue = snapshot.val();
                                                 if (MonitorAutoPUMPValue == 1) {
@@ -859,6 +901,10 @@
                                         }
                                     });
                                 }
+                            }
+                            else {
+                                clearInterval(flashIntervalOffif);
+                                compLight.style.backgroundColor = "red";
                             }
                         });
 
@@ -886,23 +932,22 @@
                                         img1.src = COMP_PUMP_IMAGE;
                                         compLight.style.backgroundColor = "green";
                                     } else {
-                                        img1.src = PUMP_IMAGE;
+                                        // img1.src = PUMP_IMAGE;
                                         compLight.style.backgroundColor = "red";
                                     }
                                 });
                             }
+                            clearInterval(flashInterval);
+                            clearInterval(flashIntervalOffif);
+                            clearInterval(flashInterval1);
                         });
-                        clearInterval(flashInterval);
-                        clearInterval(flashIntervalOffif);
-                        clearInterval(flashIntervalOffelse);
-                        clearInterval(flashInterval1);
                     }
                     else if (selectedOption === "MANUAL") {
-                        
+
                         const dbRefCompData = firebase.database().ref("monitor/COMP/data");
                         const dbRefPumpData = firebase.database().ref("monitor/PUMP/data");
                         const dbRefSetTlow = firebase.database().ref("control/setTlow");
-                       
+
                         dbRefSetTlow.once("value", (snapshot) => {
                             const setTlow = snapshot.val();
 
@@ -916,106 +961,106 @@
                                         const MonitorPUMP = snapshot.val();
 
                                         dbRefMonitorCOMP.on("value", (snapshot) => {
-                                        const MonitorCOMP = snapshot.val();
+                                            const MonitorCOMP = snapshot.val();
 
-
-                                    pumpOnField.disabled = false;
-                                    pumpOffField.disabled = false;
-
-                                    compOnField.disabled = true;
-                                    compOffField.disabled = true;
-
-                                    if (!pumpOffField.checked && !pumpOnField.checked) {
-                                        pumpOffField.checked = true;
-                                        compOffField.checked = true;
-                                    }
-
-                                    if (pumpOnField.checked && compOnField.checked) {
-                                        pumpOnField.disabled = true;
-                                        pumpOffField.disabled = true;
-
-                                        compOnField.disabled = false;
-                                        compOffField.disabled = false;
-                                    }
-
-                                    if (pumpOnField.checked && !compOnField.checked) {
-                                        CompManualTimeout = setTimeout(function () {
-                                            compOnField.disabled = false;
-                                            compOffField.disabled = false;
 
                                             pumpOnField.disabled = false;
                                             pumpOffField.disabled = false;
-                                        }, 3000);
-                                    } else {
-                                        // Nếu pumpOn không được bật, hủy hẹn giờ
-                                        clearTimeout(CompManualTimeout);
-                                    }
 
-                                    // if (!compOn && !pumpOn) {
-                                    //     // Khi cả comp và pump đều off
-                                    //     img1.src = WEB_IMAGE;
-                                    // } else if ((!compOn && pumpOn)) {
-                                    //     // Khi chỉ pump on và comp off
-                                    //     img1.src = PUMP_IMAGE;
-                                    // } else if ((!compOn && pumpOn) && (temp < setTlow)) {
-                                    //     compOnField.disabled = true;
-                                    //     compOffField.disabled = true;
-                                    //     clearTimeout(CompManualTimeout);
-                                    //     img1.src = PUMP_IMAGE;
-                                    // } else if ((compOn && pumpOn) && (temp > setTlow)) {
-                                    //     compOnField.checked = true;
-                                    //     // Khi cả comp và pump đều on
-                                    //     img1.src = COMP_PUMP_IMAGE;
-                                    // } else if ((compOn && pumpOn) && (temp < setTlow)) {
-                                    //     // Khi cả comp và pump đều on
-                                    //     compOffField.checked = true;
-                                    //     img1.src = PUMP_IMAGE;
-                                    // }
+                                            compOnField.disabled = true;
+                                            compOffField.disabled = true;
 
-                                    if (pumpOn) {
-                                        dbRefButtonPUMP.set(1);
-                                        // pumpLight.style.backgroundColor = "green";
-                                        // img1.src = PUMP_IMAGE;
-                                     
-                                    } else {
-                                        dbRefButtonPUMP.set(0);
-                                        // pumpLight.style.backgroundColor = "red";
-                                        // img1.src = WEB_IMAGE;
-                                    }
-                                    if (compOn) {
-                                        dbRefButtonCOMP.set(1);     
-                                        // compLight.style.backgroundColor = "green";
-                                        // img1.src = COMP_PUMP_IMAGE;
-                                                       
-                                    } else {
-                                        dbRefButtonCOMP.set(0);                                                   
-                                        // compLight.style.backgroundColor = "red";
-                                    }
+                                            if (!pumpOffField.checked && !pumpOnField.checked) {
+                                                pumpOffField.checked = true;
+                                                compOffField.checked = true;
+                                            }
 
-                                    if (MonitorPUMP == 1) {
-                                        pumpLight.style.backgroundColor = "green";                                      
-                                        img1.src = PUMP_IMAGE;                                     
-                                    } else {
-                                        pumpLight.style.backgroundColor = "red";                          
-                                        img1.src = WEB_IMAGE;
-                                    }
-                                    if (MonitorCOMP == 1) {
-                                        compLight.style.backgroundColor = "green";                                            
-                                        img1.src = COMP_PUMP_IMAGE;
-                                                                
-                                    } else {
-                                        compLight.style.backgroundColor = "red";                                                                                    
-                                    }
+                                            if (pumpOnField.checked && compOnField.checked) {
+                                                pumpOnField.disabled = true;
+                                                pumpOffField.disabled = true;
+
+                                                compOnField.disabled = false;
+                                                compOffField.disabled = false;
+                                            }
+
+                                            if (pumpOnField.checked && !compOnField.checked) {
+                                                CompManualTimeout = setTimeout(function () {
+                                                    compOnField.disabled = false;
+                                                    compOffField.disabled = false;
+
+                                                    pumpOnField.disabled = false;
+                                                    pumpOffField.disabled = false;
+                                                }, 3000);
+                                            } else {
+                                                // Nếu pumpOn không được bật, hủy hẹn giờ
+                                                clearTimeout(CompManualTimeout);
+                                            }
+
+                                            // if (!compOn && !pumpOn) {
+                                            //     // Khi cả comp và pump đều off
+                                            //     img1.src = WEB_IMAGE;
+                                            // } else if ((!compOn && pumpOn)) {
+                                            //     // Khi chỉ pump on và comp off
+                                            //     img1.src = PUMP_IMAGE;
+                                            // } else if ((!compOn && pumpOn) && (temp < setTlow)) {
+                                            //     compOnField.disabled = true;
+                                            //     compOffField.disabled = true;
+                                            //     clearTimeout(CompManualTimeout);
+                                            //     img1.src = PUMP_IMAGE;
+                                            // } else if ((compOn && pumpOn) && (temp > setTlow)) {
+                                            //     compOnField.checked = true;
+                                            //     // Khi cả comp và pump đều on
+                                            //     img1.src = COMP_PUMP_IMAGE;
+                                            // } else if ((compOn && pumpOn) && (temp < setTlow)) {
+                                            //     // Khi cả comp và pump đều on
+                                            //     compOffField.checked = true;
+                                            //     img1.src = PUMP_IMAGE;
+                                            // }
+
+                                            if (pumpOn) {
+                                                dbRefButtonPUMP.set(1);
+                                                // pumpLight.style.backgroundColor = "green";
+                                                // img1.src = PUMP_IMAGE;
+
+                                            } else {
+                                                dbRefButtonPUMP.set(0);
+                                                // pumpLight.style.backgroundColor = "red";
+                                                // img1.src = WEB_IMAGE;
+                                            }
+                                            if (compOn) {
+                                                dbRefButtonCOMP.set(1);
+                                                // compLight.style.backgroundColor = "green";
+                                                // img1.src = COMP_PUMP_IMAGE;
+
+                                            } else {
+                                                dbRefButtonCOMP.set(0);
+                                                // compLight.style.backgroundColor = "red";
+                                            }
+
+                                            if (MonitorPUMP == 1) {
+                                                pumpLight.style.backgroundColor = "green";
+                                                img1.src = PUMP_IMAGE;
+                                            } else {
+                                                pumpLight.style.backgroundColor = "red";
+                                                img1.src = WEB_IMAGE;
+                                            }
+                                            if (MonitorCOMP == 1) {
+                                                compLight.style.backgroundColor = "green";
+                                                img1.src = COMP_PUMP_IMAGE;
+
+                                            } else {
+                                                compLight.style.backgroundColor = "red";
+                                            }
+                                        });
+
+                                    });
+                                    clearInterval(flashInterval);
+                                    clearInterval(flashIntervalOffif);
+                                    clearInterval(flashIntervalOffelse);
+                                    clearInterval(flashInterval1);
                                 });
-                                
-                            });
-                            clearInterval(flashInterval);
-                            clearInterval(flashIntervalOffif);
-                            clearInterval(flashIntervalOffelse);
-                            clearInterval(flashInterval1);
                             });
                         });
-                    });
                     }
                 }
                 function sendValueToFirebase(mode) {
@@ -1055,10 +1100,11 @@
 
                         var offValue = snapshot.val();
 
-                        if (offValue === 1) {
+                        if (offValue == 1) {
                             document.getElementById("Off").checked = true;
                             document.querySelector('.btn-group1').style.display = 'none';
                             document.querySelector('.btn-group2').style.display = 'none';
+                            clearInterval(flashInterval);
 
                         } else {
                             document.getElementById("Off").checked = false;
@@ -1066,7 +1112,7 @@
                         }
                     });
                     // Cập nhật giao diện web dựa trên giá trị của biến MANUAL
-                    if (manualValue === 1) {
+                    if (manualValue == 1) {
                         // Hiển thị btn-group1 và btn-group2
                         document.querySelector('.btn-group1').style.display = 'block';
                         document.querySelector('.btn-group2').style.display = 'block';
