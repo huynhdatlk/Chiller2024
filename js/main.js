@@ -856,3 +856,49 @@ dbRefMonitorManual.on("value", function (snapshot) {
         // dbRefMonitorAuto.set(0);
     }
 });
+
+
+//-----------------------------------BANG GIAI THICH CHO HLT, LLT------------------------------------------------------------
+
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const lights = document.querySelectorAll('.light b');
+//     const tooltip = document.getElementById('tooltip');
+    
+//     lights.forEach(light => {
+//         light.addEventListener('mouseover', function(event) {
+//             const text = event.target.innerText.trim();
+//             console.log("test", text)
+//             let explanation = '';
+            
+//             switch(text) {
+//                 case 'HLT':
+//                     console.log("HLT")
+//                     explanation = 'Nhiệt độ mức cao (High-Level Temperature)';
+//                     break;
+//                 case 'LLT':
+//                     console.log("LLT")
+//                     explanation = 'Nhiệt độ mức thấp (Low-Level Temperature)';
+//                     break;
+//                 default:
+//                     // explanation = 'Chữ viết tắt không xác định';
+//             }
+            
+//             tooltip.innerText = explanation;
+//             tooltip.style.display = 'block';
+
+//             // Tính toán vị trí của tooltip
+//             const rect = event.target.getBoundingClientRect();
+//             tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+//             tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 5}px`;
+//         });
+
+//         light.addEventListener('mouseout', function() {
+//             tooltip.style.display = 'none';
+//         });
+//     });
+// });
+

@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DATN K20</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <style>
         body {
             background-image: url(img/background.jpg);
@@ -14,10 +15,13 @@
             /* background-attachment: fixed;  */
             background-size: 100%;
             background-position: center;
+            position: relative;
+            z-index: 0;
         }
 
         .container {
             padding: 0px;
+           
         }
 
         .header {
@@ -96,8 +100,26 @@
             vertical-align: middle;
             display: inline-block;
             border: 2px solid black;
+            z-index: 1;
             /* Added border */
         }
+
+        /* Tooltip styling */
+        /* .tooltip {
+            display: none;
+            width: 100px;
+            height: 50px;
+            position: absolute;
+
+            background-color: #af1818;
+            border: 1px solid #000;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+            transform: translate(-50%, -100%);
+            white-space: nowrap;
+        } */
 
         .light-item {
             margin-bottom: 20px;
@@ -408,6 +430,22 @@
             background-color: #007bff;
             color: white;
         }
+        
+        /* tooltip container */
+        .tooltip-inner {
+            background-color: #fff; /* Background color */
+            border: 1px black solid;
+            color: #000; /* Text color */
+            border-radius: 12px; /* Border radius */
+            padding: 10px; /* Padding */
+        }
+        /* tooltip arrow */
+        .tooltip-arrow::before {
+            border-top-color: #fff; /* Arrow color for top */
+            border-right-color: #fff; /* Arrow color for right */
+            border-bottom-color: #fff; /* Arrow color for bottom */
+            border-left-color: #fff; /* Arrow color for left */
+        }
     </style>
 </head>
 
@@ -423,9 +461,46 @@
         </div>
     </div>
     <img id="img1" src="img/Web_3.gif">
-    <div id="lightAlarmLTH" class="light"><b><br><br>Alarm<br>HLT</b></div>
-    <div id="lightWarnLTH" class="light"><b><br><br>Warn<br>HLT</b></div>
-    <div id="lightWarnLTL" class="light"><b><br><br>Alarm<br>LLT</b></div>
+    <div id="lightAlarmLTH" class="light ">
+        <b>
+            <br>
+            <br>
+            <span data-bs-toggle="tooltip" data-bs-title="Alarm High Liquid Temperature" data-bs-placement="bottom">
+                Alarm
+                <br>
+                HLT
+            </span>
+        </b>
+    </div>
+    <div id="lightWarnLTH" class="light">
+        <b>
+            <br>
+            <br>
+            <span data-bs-toggle="tooltip" data-bs-title="Warn High Liquid Temperature" data-bs-placement="bottom">
+                Warn
+                <br>
+                HLT
+            </span>
+        </b>
+    </div>
+
+    <div id="lightWarnLTL" class="light">
+        <b>
+            <br>
+            <br>
+            <span data-bs-toggle="tooltip" data-bs-title="Alarm Low Liquid Temperature" data-bs-placement="bottom">
+                Alarm
+                <br>
+                LLT
+            </span>
+        </b>
+    </div>
+
+    <!-- Tooltip container -->
+    <!-- <div id="tooltip" class="tooltip"></div> -->
+
+
+
     <div class="control-wrapper">
         <div class="container-control">
             <div id="controlFeatures" class="features">
@@ -505,19 +580,19 @@
                 <b>Fault List</b>
                 <div class="light-container">
                     <div class="light-item">
-                        <span class="label"><b>HP</b></span>
+                        <span class="label"><b><span data-bs-toggle="tooltip" data-bs-title="High Pressure" data-bs-placement="left">HP</span></b></span>
                         <div id="lightHP" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b>LP</b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Low Pressure" data-bs-placement="left">LP</span></span></b></span>
                         <div id="lightLP" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b>PO</b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Pump OverLoad" data-bs-placement="left">PO</span></span></b></span>
                         <div id="lightPO" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b>CO</b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Comp OverLoad" data-bs-placement="left">CO</span></span></b></span>
                         <div id="lightCO" class="light"></div>
                     </div>
                 </div>
@@ -548,16 +623,27 @@
                     </div>
                 </div>
             </div>
+
+
             <div id="light1" class="light"></div>
             <div id="light2" class="light"></div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
                 crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+                integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+                crossorigin="anonymous"></script>
+            <script>
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            </script>
             <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
             <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
             <script type="module" src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
             <script type="module" src="js/main.js"></script>
             <script>
+
+
                 var pumpOnField = document.getElementById("pumpOn");
                 var pumpOffField = document.getElementById("pumpOff");
                 var compOnField = document.getElementById("compOn");
@@ -661,7 +747,7 @@
                 }
                 let flashIntervalCOMPLight
                 let flashLightCompTimeout
-               
+
                 function intervalCOMPLight() {
                     let compLight = document.getElementById("light1");
                     let pumpLight = document.getElementById("light2");
@@ -685,7 +771,7 @@
                             else {
                                 compLight.style.backgroundColor = "red";
                                 img1.src = PUMP_IMAGE;
-                            }                      
+                            }
                         });
                     }, 10000);
                 }
@@ -729,7 +815,7 @@
                         pumpOffField.checked = false;
                         compOn = false;
                         pumpOn = false;
-                        if ((setpoint - 2) < temp) {
+                        if ((setpoint + 2) < temp) {
 
                             // set 1 ButtonPump 
 
@@ -770,7 +856,7 @@
                                 }
                             });
 
-                        } else {
+                        } else if ((setpoint - 2) > temp) {
                             lightCompTimeout2 = setTimeout(function () {
                                 dbRefButtonCOMP.set(0);
                             }, 2000); // Thực hiện sau 2 giây
@@ -827,7 +913,7 @@
                             let MonitorAutoValue = snapshot.val();
                             if (MonitorAutoValue == 1) {
                                 // nhiet do cao hon 20 
-                                if ((setpoint - 2) < temp) {
+                                if ((setpoint + 2) < temp) {
 
                                     // Pump On
                                     dbRefMonitorPUMP.on("value", function (snapshot) {
@@ -842,7 +928,7 @@
                                         }
                                     });
 
-                                    intervalCOMPLight();                                 
+                                    intervalCOMPLight();
                                     // // Set 1 ButtonComp 
                                     // clearInterval(flashIntervalOffif);
                                     // flashIntervalOffif = setInterval(function () {
@@ -865,7 +951,7 @@
                                     // }, 10000);
 
                                     // nhiet do thap hon 20
-                                } else {
+                                } else if (((setpoint - 2) > temp)) {
                                     dbRefMonitorCOMP.once('value').then(function (snapshot) {
                                         if (snapshot.val() == 1) {
                                             clearInterval(flashInterval1);
@@ -902,7 +988,7 @@
                                     });
                                 }
                             }
-                            else {
+                            else if ((setpoint + 2) > temp) {
                                 clearInterval(flashIntervalOffif);
                                 compLight.style.backgroundColor = "red";
                             }
@@ -990,7 +1076,7 @@
 
                                                     pumpOnField.disabled = false;
                                                     pumpOffField.disabled = false;
-                                                }, 3000);
+                                                }, 10000);
                                             } else {
                                                 // Nếu pumpOn không được bật, hủy hẹn giờ
                                                 clearTimeout(CompManualTimeout);
@@ -1129,7 +1215,7 @@
                     let dbRefMonitorPUMP = firebase.database().ref("monitor/PUMP/data");
                     let dbRefMonitorAuto = firebase.database().ref("monitor/MODE/AUTO/data");
                     let dbRefMonitorManual = firebase.database().ref("monitor/MODE/MANUAL/data");
-                    if (offValue === 1) {
+                    if (offValue == 1) {
                         dbRefButtonCOMP.set(0);
                         dbRefButtonPUMP.set(0);
                         dbRefSetpoint.set(20);
@@ -1138,13 +1224,13 @@
                         dbRefMonitorCOMP.set(0);
                         dbRefMonitorPUMP.set(0);
                     }
-                    if (manualValue === 1) {
+                    if (manualValue == 1) {
                         dbRefSetpoint.set(null);
                     }
                     if (autoValue == 1) {
                         dbRefSetpoint.set(20);
                     }
-                    if (offValue === 0) {
+                    if (offValue == 0) {
                         dbRefMonitorCOMP.set(0);
                         dbRefMonitorPUMP.set(0);
                         dbRefMonitorAuto.set(0);
