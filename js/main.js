@@ -603,7 +603,7 @@ firebase.database().ref("monitor/WARN_LIQUID_TEMP_HIGH/data").on("value", functi
         }, 500);
     } else {
         clearInterval(flashInterval);
-        lightWarnLTH.style.backgroundColor = "gray";
+        lightWarnLTH.style.backgroundColor = "gray";      
     }
 });
 
@@ -618,7 +618,7 @@ firebase.database().ref("monitor/WARN_LIQUID_TEMP_LOW/data").on("value", functio
         }, 500);
     } else {
         clearInterval(flashInterval);
-        lightWarnLTL.style.backgroundColor = "gray";
+        lightWarnLTL.style.backgroundColor = "gray";    
     }
 });
 
@@ -723,13 +723,13 @@ firebase.database().ref("control/BIENTAM").on("value", function (snapshot) {
 
 });
 
-var flashIntervalHP;
-var flashIntervalLP;
-var flashIntervalPO;
-var flashIntervalCO;
-var flashIntervalL1;
-var flashIntervalL2;
-var flashIntervalL3;
+// var flashIntervalHP;
+// var flashIntervalLP;
+// var flashIntervalPO;
+// var flashIntervalCO;
+// var flashIntervalL1;
+// var flashIntervalL2;
+// var flashIntervalL3;
 
 // hàm các lỗi
 
@@ -738,11 +738,12 @@ firebase.database().ref("monitor/statusF/HP/data").on("value", function (snapsho
     var data = snapshot.val();
     var lightHP = document.getElementById("lightHP");
     if (data == 0) {
-        flashIntervalHP = setInterval(function () {
-            toggleColor(lightHP, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalHP = setInterval(function () {
+        //     toggleColor(lightHP, "red"); // Toggle to red
+        // }, 500);
+        lightHP.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalHP);
+        // clearInterval(flashIntervalHP);
         lightHP.style.backgroundColor = "gray";
     }
     checkfault();
@@ -753,11 +754,12 @@ firebase.database().ref("monitor/statusF/LP/data").on("value", function (snapsho
     var data = snapshot.val();
     var lightLP = document.getElementById("lightLP");
     if (data == 0) {
-        flashIntervalLP = setInterval(function () {
-            toggleColor(lightLP, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalLP = setInterval(function () {
+        //     toggleColor(lightLP, "red"); // Toggle to red
+        lightLP.style.backgroundColor = "red";
+        // }, 500);
     } else {
-        clearInterval(flashIntervalLP);
+        // clearInterval(flashIntervalLP);
         lightLP.style.backgroundColor = "gray";
     }
 });
@@ -767,11 +769,12 @@ firebase.database().ref("monitor/statusF/PO/data").on("value", function (snapsho
     var data = snapshot.val();
     var lightPO = document.getElementById("lightPO");
     if (data == 0) {
-        flashIntervalPO = setInterval(function () {
-            toggleColor(lightPO, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalPO = setInterval(function () {
+        //     toggleColor(lightPO, "red"); // Toggle to red
+        // }, 500);
+        lightPO.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalPO);
+        // clearInterval(flashIntervalPO);
         lightPO.style.backgroundColor = "gray";
     }
 });
@@ -781,11 +784,12 @@ firebase.database().ref("monitor/statusF/CO/data").on("value", function (snapsho
     var data = snapshot.val();
     var lightCO = document.getElementById("lightCO");
     if (data == 0) {
-        flashIntervalCO = setInterval(function () {
-            toggleColor(lightCO, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalCO = setInterval(function () {
+        //     toggleColor(lightCO, "red"); // Toggle to red
+        // }, 500);
+        lightCO.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalCO);
+        // clearInterval(flashIntervalCO);
         lightCO.style.backgroundColor = "gray";
     }
 });
@@ -795,11 +799,12 @@ firebase.database().ref("monitor/3phase_fault/L1/data").on("value", function (sn
     var data = snapshot.val();
     var lightL1 = document.getElementById("lightL1");
     if (data == 1) {
-        flashIntervalL1 = setInterval(function () {
-            toggleColor(lightL1, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalL1 = setInterval(function () {
+        //     toggleColor(lightL1, "red"); // Toggle to red
+        // }, 500);
+        lightL1.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalL1);
+        // clearInterval(flashIntervalL1);
         lightL1.style.backgroundColor = "gray";
     }
 });
@@ -809,11 +814,12 @@ firebase.database().ref("monitor/3phase_fault/L2/data").on("value", function (sn
     var data = snapshot.val();
     var lightL2 = document.getElementById("lightL2");
     if (data == 1) {
-        flashIntervalL2 = setInterval(function () {
-            toggleColor(lightL2, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalL2 = setInterval(function () {
+        //     toggleColor(lightL2, "red"); // Toggle to red
+        // }, 500);
+        lightL2.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalL2);
+        // clearInterval(flashIntervalL2);
         lightL2.style.backgroundColor = "gray";
     }
 });
@@ -823,11 +829,12 @@ firebase.database().ref("monitor/3phase_fault/L3/data").on("value", function (sn
     var data = snapshot.val();
     var lightL3 = document.getElementById("lightL3");
     if (data == 1) {
-        flashIntervalL3 = setInterval(function () {
-            toggleColor(lightL3, "red"); // Toggle to red
-        }, 500);
+        // flashIntervalL3 = setInterval(function () {
+        //     toggleColor(lightL3, "red"); // Toggle to red
+        // }, 500);
+        lightL3.style.backgroundColor = "red";
     } else {
-        clearInterval(flashIntervalL3);
+        // clearInterval(flashIntervalL3);
         lightL3.style.backgroundColor = "gray";
     }
 });
