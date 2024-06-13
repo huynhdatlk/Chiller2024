@@ -21,7 +21,7 @@
 
         .container {
             padding: 0px;
-           
+
         }
 
         .header {
@@ -45,7 +45,7 @@
         .Temp {
             position: relative;
             right: 800px;
-            bottom: -50px;
+            bottom: -20px;
 
         }
 
@@ -55,8 +55,8 @@
             background-color: red;
             border-radius: 50%;
             position: relative;
-            top: 310px;
-            right: 440px;
+            top: 300px;
+            right: 400px;
             border: 2px solid black;
             /* Added border */
         }
@@ -67,8 +67,8 @@
             background-color: red;
             border-radius: 50%;
             position: relative;
-            top: 310px;
-            right: 690px;
+            top: 300px;
+            right: 630px;
             border: 2px solid black;
             /* Added border */
         }
@@ -103,23 +103,6 @@
             z-index: 1;
             /* Added border */
         }
-
-        /* Tooltip styling */
-        /* .tooltip {
-            display: none;
-            width: 100px;
-            height: 50px;
-            position: absolute;
-
-            background-color: #af1818;
-            border: 1px solid #000;
-            padding: 5px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 5;
-            transform: translate(-50%, -100%);
-            white-space: nowrap;
-        } */
 
         .light-item {
             margin-bottom: 20px;
@@ -227,6 +210,7 @@
             position: relative;
             left: 50px;
             bottom: 120px;
+
         }
 
         button {
@@ -430,21 +414,30 @@
             background-color: #007bff;
             color: white;
         }
-        
+
         /* tooltip container */
         .tooltip-inner {
-            background-color: #fff; /* Background color */
+            background-color: #fff;
+            /* Background color */
             border: 1px black solid;
-            color: #000; /* Text color */
-            border-radius: 12px; /* Border radius */
-            padding: 10px; /* Padding */
+            color: #000;
+            /* Text color */
+            border-radius: 12px;
+            /* Border radius */
+            padding: 10px;
+            /* Padding */
         }
+
         /* tooltip arrow */
         .tooltip-arrow::before {
-            border-top-color: #fff; /* Arrow color for top */
-            border-right-color: #fff; /* Arrow color for right */
-            border-bottom-color: #fff; /* Arrow color for bottom */
-            border-left-color: #fff; /* Arrow color for left */
+            border-top-color: #fff;
+            /* Arrow color for top */
+            border-right-color: #fff;
+            /* Arrow color for right */
+            border-bottom-color: #fff;
+            /* Arrow color for bottom */
+            border-left-color: #fff;
+            /* Arrow color for left */
         }
     </style>
 </head>
@@ -495,12 +488,6 @@
             </span>
         </b>
     </div>
-
-    <!-- Tooltip container -->
-    <!-- <div id="tooltip" class="tooltip"></div> -->
-
-
-
     <div class="control-wrapper">
         <div class="container-control">
             <div id="controlFeatures" class="features">
@@ -575,24 +562,31 @@
         </div>
         <div class="container">
         </div>
-        <div class="control-wrapper1">
+        <div class="    control-wrapper1">
             <div class="container-control1">
                 <b>Fault List</b>
                 <div class="light-container">
                     <div class="light-item">
-                        <span class="label"><b><span data-bs-toggle="tooltip" data-bs-title="High Pressure" data-bs-placement="left">HP</span></b></span>
+                        <span class="label"><b><span data-bs-toggle="tooltip" data-bs-title="High Pressure"
+                                    data-bs-placement="left">HP</span></b></span>
                         <div id="lightHP" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Low Pressure" data-bs-placement="left">LP</span></span></b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip"
+                                        data-bs-title="Low Pressure"
+                                        data-bs-placement="left">LP&nbsp;</span></span></b></span>
                         <div id="lightLP" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Pump OverLoad" data-bs-placement="left">PO</span></span></b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip"
+                                        data-bs-title="Pump OverLoad"
+                                        data-bs-placement="left">PO</span></span></b></span>
                         <div id="lightPO" class="light"></div>
                     </div>
                     <div class="light-item">
-                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip" data-bs-title="Comp OverLoad" data-bs-placement="left">CO</span></span></b></span>
+                        <span class="label"><b> <span class="label"><span data-bs-toggle="tooltip"
+                                        data-bs-title="Comp OverLoad"
+                                        data-bs-placement="left">CO</span></span></b></span>
                         <div id="lightCO" class="light"></div>
                     </div>
                 </div>
@@ -623,8 +617,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div id="light1" class="light"></div>
             <div id="light2" class="light"></div>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -1004,22 +996,23 @@
                                         pumpOn = true
                                         img1.src = PUMP_IMAGE;
                                         pumpLight.style.backgroundColor = "green";
+                                        firebase.database().ref("monitor/COMP/data").on("value", function (snapshot) {
+                                            var compVal = snapshot.val();
+                                            if (compVal == 1) {
+                                                img1.src = COMP_PUMP_IMAGE;
+                                                compLight.style.backgroundColor = "green";
+                                            } else {
+                                                img1.src = PUMP_IMAGE;
+                                                compLight.style.backgroundColor = "red";
+                                            }
+                                        });
                                     } else {
                                         pumpOn = false
                                         img1.src = WEB_IMAGE;
                                         pumpLight.style.backgroundColor = "red";
                                     }
                                 });
-                                firebase.database().ref("monitor/COMP/data").on("value", function (snapshot) {
-                                    var compVal = snapshot.val();
-                                    if (compVal == 1) {
-                                        img1.src = COMP_PUMP_IMAGE;
-                                        compLight.style.backgroundColor = "green";
-                                    } else {
-                                        img1.src = PUMP_IMAGE;
-                                        compLight.style.backgroundColor = "red";
-                                    }
-                                });
+
                             }
                             clearInterval(flashInterval);
                             clearInterval(flashIntervalOffif);
@@ -1216,7 +1209,7 @@
                     if (offValue == 1) {
                         dbRefButtonCOMP.set(0);
                         dbRefButtonPUMP.set(0);
-                        dbRefSetpoint.set(20);
+                        dbRefSetpoint.set(10);
                         dbRefMonitorAuto.set(0);
                         dbRefMonitorManual.set(0);
                         dbRefMonitorCOMP.set(0);
@@ -1226,7 +1219,7 @@
                         dbRefSetpoint.set(null);
                     }
                     if (autoValue == 1) {
-                        dbRefSetpoint.set(20);
+                        dbRefSetpoint.set(10);
                     }
                     if (offValue == 0) {
                         dbRefMonitorCOMP.set(0);

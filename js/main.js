@@ -84,6 +84,8 @@ export function checkfault() {
                             dbRefControlPUMP.set(0);
                             dbRefControlCOMP.set(0);
                             compLight.style.backgroundColor = "red";
+                            pumpLight.style.backgroundColor = "red";
+                            img1.src = WEB_IMAGE;
                             alert(" L1 Error - Comp and Pump stop");
                         }
                         // da sua loi bat COMP
@@ -96,7 +98,7 @@ export function checkfault() {
                 });
             });
         }
-        else if (variable == "L2") {
+        else if (variable == "L3") {
             dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
                 const val = snap.val();
                 dbRefControlAuto.on("value", function (snapshot) {
@@ -117,6 +119,8 @@ export function checkfault() {
                             dbRefControlPUMP.set(0);
                             dbRefControlCOMP.set(0);
                             compLight.style.backgroundColor = "red";
+                            pumpLight.style.backgroundColor = "red";
+                            img1.src = WEB_IMAGE;
                             alert(" L2 Error - Comp and Pump stop");
                         }
 
@@ -130,7 +134,7 @@ export function checkfault() {
                 });
             });
         }
-        else if (variable == "L3") {
+        else if (variable == "L2") {
             dbRefMonitor.child("3phase_fault").child(variable).child("data").on("value", (snap) => {
                 const val = snap.val();
                 dbRefControlAuto.on("value", function (snapshot) {
@@ -151,6 +155,8 @@ export function checkfault() {
                             dbRefControlPUMP.set(0);
                             dbRefControlCOMP.set(0);
                             compLight.style.backgroundColor = "red";
+                            pumpLight.style.backgroundColor = "red";
+                            img1.src = WEB_IMAGE;
                             alert(" L3 Error - Comp and Pump stop");
                         }
 
@@ -380,10 +386,16 @@ dbRefManualTaplo.on("value", (snapshot) => {
 function triggerColor(selector, val, mess) {
     if (val != document.querySelector(selector).innerHTML) {
         document.querySelector(selector).innerHTML = `${mess}: ${val}`;
-        document.querySelector(selector).parentNode.style.background = "linear-gradient(to bottom , blue, purple)";
+        document.querySelector(selector).parentNode.style.background = "darkblue";
+        document.querySelector(selector).parentNode.style.border = "3px solid black";
+        document.querySelector(selector).parentNode.style.padding = "10px";
+        
     }
     setTimeout(() => {
-        document.querySelector(selector).parentNode.style.background = "linear-gradient(to bottom , green, purple)";
+        document.querySelector(selector).parentNode.style.background = "darkgreen";
+        document.querySelector(selector).parentNode.style.border = "3px solid black";
+        document.querySelector(selector).parentNode.style.padding = "10px";
+       
     }, 2000);
 }
 
@@ -812,30 +824,30 @@ firebase.database().ref("monitor/3phase_fault/L1/data").on("value", function (sn
 // Monitor ALARM_LEVEL2 data for L2
 firebase.database().ref("monitor/3phase_fault/L2/data").on("value", function (snapshot) {
     var data = snapshot.val();
-    var lightL2 = document.getElementById("lightL2");
+    var lightL3 = document.getElementById("lightL3");
     if (data == 1) {
         // flashIntervalL2 = setInterval(function () {
         //     toggleColor(lightL2, "red"); // Toggle to red
         // }, 500);
-        lightL2.style.backgroundColor = "red";
+        lightL3.style.backgroundColor = "red";
     } else {
         // clearInterval(flashIntervalL2);
-        lightL2.style.backgroundColor = "gray";
+        lightL3.style.backgroundColor = "gray";
     }
 });
 
 // Monitor ALARM_LEVEL3 data for L3
 firebase.database().ref("monitor/3phase_fault/L3/data").on("value", function (snapshot) {
     var data = snapshot.val();
-    var lightL3 = document.getElementById("lightL3");
+    var lightL2 = document.getElementById("lightL2");
     if (data == 1) {
         // flashIntervalL3 = setInterval(function () {
         //     toggleColor(lightL3, "red"); // Toggle to red
         // }, 500);
-        lightL3.style.backgroundColor = "red";
+        lightL2.style.backgroundColor = "red";
     } else {
         // clearInterval(flashIntervalL3);
-        lightL3.style.backgroundColor = "gray";
+        lightL2.style.backgroundColor = "gray";
     }
 });
 
